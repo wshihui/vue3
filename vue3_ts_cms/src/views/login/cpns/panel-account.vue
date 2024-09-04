@@ -27,8 +27,8 @@ const CACHE_NAME = 'name'
 const CACHE_PASSWORD = 'password'
 
 const accountForm = reactive({
-  name: '',
-  password: ''
+  name: localCache.getCache(CACHE_NAME) ?? '',
+  password: localCache.getCache(CACHE_PASSWORD) ?? ''
 })
 
 const accountRules: FormRules = {

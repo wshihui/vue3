@@ -6,7 +6,7 @@
     </div>
     <div class="menu">
       <el-menu
-        default-active="3"
+        :default-active="defaultActive"
         :collapse="isFold"
         active-text-color="#fff"
         background-color="#001529"
@@ -22,7 +22,10 @@
             </template>
 
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="toPage(subitem.url)"
+              >
                 {{ subitem.name }}
               </el-menu-item>
             </template>
@@ -35,6 +38,9 @@
 
 <script lang="ts" setup>
 import useLoginStore from '@/store/login/login'
+import { mapPathToMenu } from '@/utils/map-menus'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 defineProps({
   isFold: {
@@ -43,8 +49,22 @@ defineProps({
   }
 })
 
+// 1、获取菜单
 const loginStore = useLoginStore()
 const userMenus = loginStore.userMenus
+
+// 2、监听item点击事件
+const router = useRouter()
+const toPage = (url: string) => {
+  router.push(url)
+}
+
+// 3、ELMenu的默认菜单
+const route = useRoute()
+const defaultActive = computed(() => {
+  const pathMenu = mapPathToMenu(route.path, userMenus)
+  return pathMenu.id + ''
+})
 </script>
 
 <style lang="less" scoped>

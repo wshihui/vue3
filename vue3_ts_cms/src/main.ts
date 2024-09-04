@@ -4,8 +4,8 @@ import './assets/css/index.less'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import pinia from './store'
-import registerIcons from './global/register-icons'
+import store from './store'
+import icons from './global/register-icons'
 
 // 0.针对ELMessage和ELLoading等组件引入样式的方法
 // 1.全局引入样式（所有样式全部引入）
@@ -24,9 +24,7 @@ import registerIcons from './global/register-icons'
 import 'element-plus/theme-chalk/el-message.css'
 
 const app = createApp(App)
-
+app.use(icons)
+app.use(store)
 app.use(router)
-app.use(pinia)
-app.use(registerIcons)
-
 app.mount('#app')
