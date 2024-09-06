@@ -21,8 +21,13 @@ const systemStore = useSystemStore()
 systemStore.postUserListAction()
 
 // 2、获取用户列表数据，展示
+/**
+ * const usersList = systemStore.usersList
+ * 这样是拿不到数据的，因为接口请求是异步的，而获取数据不是响应式的
+ * 解决办法：1、使用computed计算属性
+ *         2、使用pinia的storeToRefs方法
+ */
 const { usersList } = storeToRefs(systemStore)
-// const usersList = systemStore.usersList
 </script>
 
 <style lang="less" scoped>
