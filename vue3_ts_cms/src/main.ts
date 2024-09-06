@@ -2,6 +2,8 @@ import 'normalize.css'
 import './assets/css/index.less'
 
 import { createApp } from 'vue'
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -21,9 +23,10 @@ import icons from './global/register-icons'
  * 然后就直接调用就可以了
  */
 
-import 'element-plus/theme-chalk/el-message.css'
+// import 'element-plus/theme-chalk/el-message.css'
 
 const app = createApp(App)
+app.use(ElementPlus, { locale: zhCn })
 app.use(icons)
 app.use(store)
 app.use(router)

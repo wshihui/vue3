@@ -1,5 +1,5 @@
 <template>
-  <div class="header-crubm">
+  <div class="header-crum b">
     <el-breadcrumb separator-icon="ArrowRight">
       <template v-for="item in breadcrumbs" :key="item.name">
         <el-breadcrumb-item :to="item.path">
@@ -24,6 +24,6 @@ const breadcrumbs = computed(() => {
 </script>
 
 <style lang="less" scoped>
-.header-crubm {
+.header-crumb {
 }
 </style>
