@@ -17,17 +17,23 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="真实姓名：">
-            <el-input placeholder="请输入真实姓名"></el-input>
+            <el-input
+              v-model="searchForm.realname"
+              placeholder="请输入真实姓名"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="电话号码：">
-            <el-input placeholder="请输入电话号码"></el-input>
+            <el-input
+              v-model="searchForm.cellphone"
+              placeholder="请输入电话号码"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="状态：">
-            <el-select placeholder="请选择状态">
+            <el-select placeholder="请选择状态" v-model="searchForm.enable">
               <el-option label="启用" :value="1"></el-option>
               <el-option label="禁用" :value="0"></el-option>
             </el-select>
@@ -36,6 +42,7 @@
         <el-col :span="8">
           <el-form-item label="创建时间：">
             <el-date-picker
+              v-model="searchForm.createAt"
               type="daterange"
               range-separator="-"
               start-placeholder="开始时间"
@@ -48,7 +55,9 @@
     </el-form>
     <div class="btns">
       <el-button icon="Refresh" @click="handleResetClick">重置</el-button>
-      <el-button icon="Search" type="primary">查询</el-button>
+      <el-button icon="Search" type="primary" @click="handleSearchClick">
+        查询
+      </el-button>
     </div>
   </div>
 </template>
@@ -57,14 +66,22 @@
 import type { ElForm } from 'element-plus'
 import { reactive, ref } from 'vue'
 
+const emits = defineEmits(['queryClick', 'resetClick'])
 const searchForm = reactive({
   name: '',
-  realname: ''
+  realname: '',
+  cellphone: '',
+  enable: 1,
+  createAt: ''
 })
 
 const formRef = ref<InstanceType<typeof ElForm>>()
 function handleResetClick() {
   formRef.value?.resetFields()
+  emits('resetClick')
+}
+function handleSearchClick() {
+  emits('queryClick', searchForm)
 }
 </script>
 

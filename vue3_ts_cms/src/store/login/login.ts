@@ -9,6 +9,7 @@ import { localCache } from '@/utils/cache'
 import { LOGIN_TOKEN } from '@/global/constants'
 import router from '@/router'
 import { mapMenusToRoutes } from '@/utils/map-menus'
+import useMainStore from '../main/main'
 
 /**
  * 执行console.log(this.userInfo.role)时报错：类型“{}”上不存在属性“role”
@@ -47,6 +48,10 @@ const useLoginStore = defineStore('login', {
       this.userInfo = userInfo
       localCache.setCache('userInfo', userInfo)
 
+      // 获取基础数据：角色列表、部门列表等
+      const mainStore = useMainStore()
+      mainStore.fetchMainDataAction()
+
       // 获取登录用户的菜单
       const userMenuResult = await getUserMenuByRoleId(id)
       const userMenus = userMenuResult.data
@@ -69,6 +74,9 @@ const useLoginStore = defineStore('login', {
         this.token = token
         this.userInfo = userInfo
         this.userMenus = userMenus
+
+        const mainStore = useMainStore()
+        mainStore.fetchMainDataAction()
 
         const routes = mapMenusToRoutes(userMenus)
         routes.forEach((route) => router.addRoute('main', route))
