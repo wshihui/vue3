@@ -15,7 +15,7 @@
               placeholder="请输入真实姓名"
             ></el-input>
           </el-form-item>
-          <el-form-item label="密码：" prop="password">
+          <el-form-item v-if="isNewRef" label="密码：" prop="password">
             <el-input
               v-model="formData.password"
               placeholder="请输入密码"
@@ -47,7 +47,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">
+          <el-button type="primary" @click="handleConfirmClick">
             确定
           </el-button>
         </div>
@@ -58,10 +58,11 @@
 
 <script lang="ts" setup>
 import useMainStore from '@/store/main/main'
+import useSystemStore from '@/store/main/system/system'
 import { storeToRefs } from 'pinia'
 import { reactive, ref } from 'vue'
 
-const formData = reactive({
+const formData = reactive<any>({
   name: '',
   realname: '',
   password: '',
@@ -74,8 +75,35 @@ const mainStore = useMainStore()
 const { rolesList, departmentsList } = storeToRefs(mainStore)
 
 const dialogVisible = ref(false)
-function setDialogVisible() {
+const isNewRef = ref(true)
+const editData = ref()
+
+function setDialogVisible(isNew: boolean = true, itemData?: any) {
   dialogVisible.value = true
+  isNewRef.value = isNew
+
+  if (!isNew && itemData) {
+    // 编辑数据
+    for (const key in formData) {
+      formData[key] = itemData[key]
+    }
+    editData.value = itemData
+  } else {
+    // 新建数据
+    for (const key in formData) {
+      formData[key] = ''
+    }
+  }
+}
+
+const systemStore = useSystemStore()
+function handleConfirmClick() {
+  dialogVisible.value = false
+  if (!isNewRef.value) {
+    systemStore.updateUserInfoAction(editData.value.id, formData)
+  } else {
+    systemStore.newUserInfoAction(formData)
+  }
 }
 
 defineExpose({ setDialogVisible })

@@ -1,4 +1,11 @@
-import { deleteUserById, postUsersListData } from '@/service/main/system/system'
+import {
+  deleteUserById,
+  newPageData,
+  newUserInfo,
+  postPageListData,
+  postUsersListData,
+  updateUserInfo
+} from '@/service/main/system/system'
 import { defineStore } from 'pinia'
 
 interface IUser {
@@ -16,12 +23,18 @@ interface IUser {
 interface ISystemState {
   usersList: IUser[]
   usersTotalCount: number
+
+  pageList: any[]
+  pageTotalCount: number
 }
 
 const useSystemStore = defineStore('system', {
   state: (): ISystemState => ({
     usersList: [],
-    usersTotalCount: 0
+    usersTotalCount: 0,
+
+    pageList: [],
+    pageTotalCount: 0
   }),
   actions: {
     async postUserListAction(queryInfo: any) {
@@ -35,6 +48,33 @@ const useSystemStore = defineStore('system', {
       console.log(deleteResult)
 
       this.postUserListAction({ size: 10, offset: 0 })
+    },
+    async newUserInfoAction(userInfo: any) {
+      const newResult = await newUserInfo(userInfo)
+      console.log(newResult)
+
+      this.postUserListAction({ size: 10, offset: 0 })
+    },
+    async updateUserInfoAction(id: number, userInfo: any) {
+      const updateResult = await updateUserInfo(id, userInfo)
+      console.log(updateResult)
+
+      this.postUserListAction({ size: 10, offset: 0 })
+    },
+
+    /** 增删改查 */
+    async postPageListAction(pageName: string, queryInfo?: any) {
+      const pageListResult = await postPageListData(pageName, queryInfo)
+      const { list, totalCount } = pageListResult.data
+      this.pageList = list
+      this.pageTotalCount = totalCount
+    },
+
+    async newPageDataAction(pageName: string, itemData: any) {
+      const newResult = await newPageData(pageName, itemData)
+      console.log(newResult)
+
+      this.postPageListAction(pageName, { offset: 0, size: 10 })
     }
   }
 })

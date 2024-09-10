@@ -4,7 +4,11 @@
       @query-click="handleQueryClick"
       @reset-click="handleResetClick"
     />
-    <user-content ref="contentRef" @new-click="handleNewClick" />
+    <user-content
+      ref="contentRef"
+      @new-click="handleNewClick"
+      @edit-click="handleEditClick"
+    />
     <user-modal ref="modalRef" />
   </div>
 </template>
@@ -27,10 +31,9 @@ const modalRef = ref<InstanceType<typeof UserModal>>()
 function handleNewClick() {
   modalRef.value?.setDialogVisible()
 }
+function handleEditClick(itemData: any) {
+  modalRef.value?.setDialogVisible(false, itemData)
+}
 </script>
 
-<style lang="less" scoped>
-.user {
-  // border-radius: 10px;
-}
-</style>
+<style lang="less" scoped></style>
