@@ -49,3 +49,10 @@ export function newPageData(pageName: string, itemData: any) {
     data: itemData
   })
 }
+
+export function updatePageData(pageName: string, id: number, itemData: any) {
+  return hyRequest.patch({
+    url: `/${pageName}/${id}`,
+    data: itemData
+  })
+}

@@ -42,7 +42,7 @@ import useSystemStore from '@/store/main/system/system'
 import { storeToRefs } from 'pinia'
 import { reactive, ref } from 'vue'
 
-const formData = reactive({
+const formData = reactive<any>({
   name: '',
   leader: '',
   parentId: ''
@@ -52,14 +52,35 @@ const mainStore = useMainStore()
 const { departmentsList } = storeToRefs(mainStore)
 
 const dialogVisible = ref(false)
-function setDialogVisible() {
+const isNewRef = ref(true)
+const editData = ref()
+
+function setDialogVisible(isNew: boolean = true, itemData?: any) {
   dialogVisible.value = true
+  isNewRef.value = isNew
+
+  if (!isNew && itemData) {
+    // 编辑数据
+    for (const key in formData) {
+      formData[key] = itemData[key]
+    }
+    editData.value = itemData
+  } else {
+    // 新增数据
+    for (const key in formData) {
+      formData[key] = ''
+    }
+  }
 }
 
 const systemStore = useSystemStore()
 function handleConfirmClick() {
   dialogVisible.value = false
-  systemStore.newPageDataAction('department', formData)
+  if (!isNewRef.value) {
+    systemStore.editPageDataAction('department', editData.value.id, formData)
+  } else {
+    systemStore.newPageDataAction('department', formData)
+  }
 }
 
 defineExpose({ setDialogVisible })

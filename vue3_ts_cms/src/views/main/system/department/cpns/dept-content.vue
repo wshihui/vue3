@@ -43,7 +43,13 @@
         </el-table-column>
         <el-table-column label="操作" width="150px" align="center">
           <template #default="scope">
-            <el-button size="small" icon="Edit" type="primary" text>
+            <el-button
+              size="small"
+              icon="Edit"
+              type="primary"
+              text
+              @click="handleEditBtnClick(scope.row)"
+            >
               编辑
             </el-button>
             <el-button
@@ -79,7 +85,7 @@ import { storeToRefs } from 'pinia'
 import { formatUTC } from '@/utils/format-date'
 import { ref } from 'vue'
 
-const emits = defineEmits(['newClick'])
+const emits = defineEmits(['newClick', 'editClick'])
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -122,6 +128,9 @@ function handleDeleteBtnClick(userId: number) {
 // 6、新建用户
 function handleNewBtnClick() {
   emits('newClick')
+}
+function handleEditBtnClick(itemData: any) {
+  emits('editClick', itemData)
 }
 
 defineExpose({ fetchPageListData })

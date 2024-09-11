@@ -28,7 +28,10 @@ const modalRef = ref<InstanceType<typeof DeptModal>>()
 function handleNewClick() {
   modalRef.value?.setDialogVisible()
 }
-function handleEditClick() {}
+function handleEditClick(itemData: any) {
+  console.log(itemData)
+  modalRef.value?.setDialogVisible(false, itemData)
+}
 </script>
 
 <style scoped></style>
