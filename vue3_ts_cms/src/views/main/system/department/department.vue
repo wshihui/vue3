@@ -1,16 +1,32 @@
 <template>
   <div class="department">
-    <dept-search
+    <page-search
+      :search-config="searchConfig"
+      @query-click="handleQueryClick"
+      @reset-click="handleResetClick"
+    />
+    <page-content
+      :content-config="contentConfig"
+      @new-click="handleNewClick"
+      @edit-click="handleEditClick"
+    />
+    <!-- <dept-search
       @query-click="handleQueryClick"
       @reset-click="handleResetClick"
     />
     <dept-content @new-click="handleNewClick" @edit-click="handleEditClick" />
-    <dept-modal ref="modalRef" />
+    <dept-modal ref="modalRef" /> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import useSystemStore from '@/store/main/system/system'
+import PageSearch from '@/components/page-search/page-search.vue'
+import PageContent from '@/components/page-content/page-content.vue'
+
+import searchConfig from './config/search.config'
+import contentConfig from './config/content.config'
+
 import DeptContent from './cpns/dept-content.vue'
 import DeptSearch from './cpns/dept-search.vue'
 import DeptModal from './cpns/dept-modal.vue'
